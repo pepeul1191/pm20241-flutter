@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
               flex: 1,
               child: GestureDetector(
                 onTap: () {
-                  // Acciones a realizar cuando se haga clic en el Text
+                  print('clicked!');
                 },
                 child: Text(
                   'Crear Cuenta',
@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
               flex: 1,
               child: GestureDetector(
                 onTap: () {
-                  // Puedes agregar cualquier acción que desees realizar aquí
+                  print('clicked!');
                 },
                 child: Text(
                   'Recuperar Contraseña',
