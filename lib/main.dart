@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,99 +8,165 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-          body: Stack(children: [
+  Widget _buildBody(BuildContext context) {
+    final bool isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
+    return SafeArea(
+        child: Stack(
+      children: [
         Container(
-          color: Colors.blue,
+          color: Color(0xFFF2F2F2),
+          width: double.infinity,
+          height: double.infinity,
           margin: EdgeInsets.all(
               00.0), // Margen inferior de 20.0 (puedes ajustar este valor)
           alignment: Alignment.centerLeft,
         ),
-        Container(
-          color: Colors.green,
-          height: 350,
-          margin: EdgeInsets.all(
-              00.0), // Margen inferior de 20.0 (puedes ajustar este valor)
-          alignment: Alignment.centerLeft,
+        Column(
+          children: [
+            Expanded(
+              flex: 2,
+              child: _image(context),
+            ),
+            Expanded(flex: 1, child: Text('')),
+          ],
         ),
-        Container(
-          color: Colors.transparent,
-          margin: EdgeInsets.only(
-              top: 200,
-              left: 100,
-              right:
-                  100), // Margen inferior de 20.0 (puedes ajustar este valor)
-          alignment: Alignment.topCenter,
-          child: Column(
-            children: [
-              Container(
-                  margin: EdgeInsets.only(
-                      bottom: 10), // Margen de 8 en todos los lados
-                  child: Text(
-                    'Logo',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  )),
-              Text(
-                'Gimnasio ULima',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              )
-            ],
+        _form(context, isKeyboardOpen),
+      ],
+    ));
+  }
+
+  Widget _image(context) {
+    return Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/login.png'),
+            fit: BoxFit.cover, // Ajustar la imagen al tamaño del Container
           ),
         ),
-        Container(
-            color: Colors.white,
+        child: null);
+  }
+
+  Widget _links(BuildContext context) {
+    return Container(
+      child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+        SizedBox(
+          height: 10,
+        ),
+        Row(
+          children: [
+            Expanded(
+              flex: 1,
+              child: GestureDetector(
+                onTap: () {
+                  // Acciones a realizar cuando se haga clic en el Text
+                },
+                child: Text(
+                  'Crear Cuenta',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0XFFF26F29),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: GestureDetector(
+                onTap: () {
+                  // Puedes agregar cualquier acción que desees realizar aquí
+                },
+                child: Text(
+                  'Recuperar Contraseña',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0XFFF26F29),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        )
+      ]),
+    );
+  }
+
+  Widget _form(BuildContext context, bool isKeyboardOpen) {
+    return SingleChildScrollView(
+        child: Container(
             alignment: Alignment.center,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Color(0XFF999999), // Color del borde
+                width: 2.0, // Ancho del borde
+              ),
+              color: Colors.white,
+            ),
             padding: EdgeInsets.all(20),
             margin: EdgeInsets.fromLTRB(
               MediaQuery.of(context).size.width * 0.1, // Margen izquierdo
-              200, // Margen superior
+              MediaQuery.of(context).size.width *
+                  (isKeyboardOpen ? 0.3 : 0.9), // Margen superior
               MediaQuery.of(context).size.width * 0.1, // Margen derecho
               MediaQuery.of(context).size.width * 0.1, // Margen inferior
             ),
-            height: 400,
+            height: 320,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Image.network(
-                  'https://upload.wikimedia.org/wikipedia/commons/0/0e/ULIMA_logo.png', // URL de la imagen
-                  width: 40, // Ancho de la imagen
-                  height: 40, // Alto de la imagen
-                  fit: BoxFit.cover, // Ajuste de la imagen
-                ),
-                Text('Ingresa esta información',
+                Text('Bienvenido',
                     style: TextStyle(
-                      fontSize: 28,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     )),
+                SizedBox(height: 12),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextField(
+                      style: TextStyle(fontSize: 16),
                       decoration: InputDecoration(
-                        labelText:
-                            'Ingrese su contraseña', // Etiqueta del campo de texto
-                        border:
-                            OutlineInputBorder(), // Borde del campo de texto
+                        labelText: 'Usuario', // Etiqueta del campo de texto
+                        labelStyle: TextStyle(color: Colors.black),
+                        border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.zero), // Borde del campo de texto
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color:
+                                  Colors.black), // Color del borde al enfocar
+                        ),
                       ),
                     ),
-                    Text('Contraseña',
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        )),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextField(
+                      style: TextStyle(fontSize: 16),
+                      decoration: InputDecoration(
+                        labelText: 'Contraseña', // Etiqueta del campo de texto
+                        labelStyle: TextStyle(color: Colors.black),
+                        border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.zero), // Borde del campo de texto
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color:
+                                  Colors.black), // Color del borde al enfocar
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     SizedBox(
                       width: double.infinity, // Ocupar todo el ancho disponible
                       child: TextButton(
@@ -109,7 +176,7 @@ class MyApp extends StatelessWidget {
                         },
                         style: TextButton.styleFrom(
                           backgroundColor:
-                              Colors.blue, // Color de fondo del botón
+                              Color(0XFFF26F29), // Color de fondo del botón
                           padding: EdgeInsets
                               .zero, // Padding cero para eliminar el espacio interno
                           shape: RoundedRectangleBorder(
@@ -118,42 +185,66 @@ class MyApp extends StatelessWidget {
                           ),
                         ),
                         child: Text(
-                          'Botón sin Bordes',
+                          'Ingresar',
                           style: TextStyle(
                             color: Colors.white, // Color del texto
+                            fontSize: 14,
                           ),
                         ),
                       ),
                     ),
-                    /*ElevatedButton(
-                      onPressed: () {
-                        // Función que se ejecuta cuando se presiona el botón
-                        print('Botón presionado');
-                      },
-                      child: Text('Login'),
-                    ), */
+                    SizedBox(
+                      width: double.infinity, // Ocupar todo el ancho disponible
+                      child: TextButton(
+                        onPressed: () {
+                          // Función que se ejecuta cuando se presiona el botón
+                          print('Botón presionado');
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor:
+                              Color(0XFF008000), // Color de fondo del botón
+                          padding: EdgeInsets
+                              .zero, // Padding cero para eliminar el espacio interno
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius
+                                .zero, // Bordes cero para eliminar los bordes
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            FaIcon(
+                              FontAwesomeIcons
+                                  .google, // Icono de Google de Font Awesome
+                              color: Colors.white, // Color del icono
+                              size: 20, // Tamaño del icono
+                            ), // Icono
+                            SizedBox(
+                                width: 12), // Espacio entre el icono y el texto
+                            Text(
+                              'Ingresar con Google',
+                              style: TextStyle(
+                                color: Colors.white, // Color del texto
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('No tienes una cuenta?',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        )),
-                    Text('Créala aquí',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.cyanAccent,
-                        )),
-                  ],
-                )
+                _links(context),
               ],
-            )),
-      ])),
-    );
+            )));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        home: Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: null,
+      body: _buildBody(context),
+    ));
   }
 }
