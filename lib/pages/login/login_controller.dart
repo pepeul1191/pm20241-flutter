@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../../models/entities/user.dart';
+import '../home/home_page.dart';
 
 class LoginController extends GetxController {
   TextEditingController userController = TextEditingController();
@@ -41,6 +42,12 @@ class LoginController extends GetxController {
     }
     Future.delayed(Duration(seconds: 5), () {
       message.value = '';
+      if (messageColor.value == Colors.green) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      }
     });
   }
 

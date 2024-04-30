@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ulimagym/pages/login/login_page.dart';
 
 void main() {
@@ -10,6 +11,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LoginPage();
+    return MaterialApp(title: 'Login', home: LoginPage());
   }
 }
