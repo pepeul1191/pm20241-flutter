@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../../models/entities/user.dart';
 import '../home/home_page.dart';
+import '../recover/recover_page.dart';
+import '../signin/signin_page.dart';
 
 class LoginController extends GetxController {
   TextEditingController userController = TextEditingController();
@@ -52,10 +54,16 @@ class LoginController extends GetxController {
   }
 
   void goToSignIn(BuildContext context) {
-    print('nos vamos Sigin');
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SignInPage()),
+    );
   }
 
   void goResetPassword(BuildContext context) {
-    print('nos vamos ResetPassword');
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => RecoverPage()),
+    );
   }
 }
