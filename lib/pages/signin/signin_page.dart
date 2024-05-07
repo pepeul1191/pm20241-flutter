@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:ulimagym/pages/login/login_page.dart';
 import 'package:ulimagym/pages/recover/recover_page.dart';
 import 'signin_controller.dart';
@@ -7,16 +8,90 @@ import 'signin_controller.dart';
 class SignInPage extends StatelessWidget {
   SignInController control = Get.put(SignInController());
 
+  void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+            height: MediaQuery.of(context).size.height * 2,
+            color: Colors.white,
+            padding: EdgeInsets.all(20),
+            child: Column(
+              children: [
+                SizedBox(height: 10),
+                Text(
+                  'Términos y Condiciones',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Expanded(
+                  child: Markdown(
+                    data: control.markdownData.value,
+                  ),
+                ),
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                              flex: 45,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  control.aceptTerms(context);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: Size(double.infinity, 35),
+                                  backgroundColor: Color(0XFFF26F29),
+                                ),
+                                child: Text(
+                                  'Acepto',
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 14),
+                                ),
+                              )),
+                          Expanded(flex: 10, child: SizedBox(height: 0)),
+                          Expanded(
+                              flex: 45,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  control.declineTerms(context);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: Size(double.infinity, 35),
+                                  backgroundColor: Color(0XFFF26F29),
+                                ),
+                                child: Text(
+                                  'No Acepto',
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 14),
+                                ),
+                              ))
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ));
+      },
+    );
+  }
+
   Widget _form(BuildContext context, bool isKeyBoardOpen) {
     return Container(
-      height: 380,
+      height: 440,
       decoration: BoxDecoration(
           border: Border.all(color: Color(0XFF999999), width: 2.0),
           color: Colors.white),
       margin: EdgeInsets.fromLTRB(
         MediaQuery.of(context).size.width * 0.1, // Margen izquierdo
         MediaQuery.of(context).size.width *
-            (isKeyBoardOpen ? 0.3 : 0.9), // Margen superior
+            (isKeyBoardOpen ? 0.3 : 0.7), // Margen superior
         MediaQuery.of(context).size.width * 0.1, // Margen derecho
         MediaQuery.of(context).size.width * 0.1, // Margen inferior
       ),
@@ -110,6 +185,23 @@ class SignInPage extends StatelessWidget {
               ),
               controller: control.pass2Controller,
               obscureText: true,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Obx(() => Checkbox(
+                      value: control.termsCheck.value,
+                      onChanged: (value) {
+                        _showBottomSheet(context);
+                      },
+                    )),
+                Expanded(
+                  child: Text(
+                    'He leido y acepto los Términos y Condiciones',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                ),
+              ],
             ),
             SizedBox(
               width: double.infinity, // Ocupar todo el ancho disponible
@@ -242,6 +334,7 @@ class SignInPage extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    control.getTerms();
     return MaterialApp(
       home: Scaffold(body: _buildBody(context)),
     );
