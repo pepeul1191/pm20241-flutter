@@ -13,6 +13,41 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   TemplateController control = Get.put(TemplateController());
 
+  Widget _popUpMenu(BuildContext context) {
+    return PopupMenuButton<String>(
+      onSelected: (String value) {
+        // Manejar la opción seleccionada
+        switch (value) {
+          case 'about':
+            print('about');
+            break;
+          case 'profile':
+            print('profile');
+            break;
+          case 'signOut':
+            print('Cerrar Sesión');
+            break;
+          default:
+            print('Unknown fruit');
+        }
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        PopupMenuItem<String>(
+          value: 'profile',
+          child: Text('Mi perfil'),
+        ),
+        PopupMenuItem<String>(
+          value: 'about',
+          child: Text('Acerca de'),
+        ),
+        PopupMenuItem<String>(
+          value: 'signOut',
+          child: Text('Cerrar Sesión'),
+        ),
+      ],
+    );
+  }
+
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
     RoutinePage(),
@@ -66,6 +101,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Color(0XFFF26F29),
           actions: [
             // Agregar un menú desplegable al AppBar
+            _popUpMenu(context)
           ]),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
