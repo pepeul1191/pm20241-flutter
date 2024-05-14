@@ -2,16 +2,76 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'exercise_controller.dart';
 import '../../configs/constants.dart';
+import '../../models/entities/body_part.dart';
 
 class ExercisePage extends StatelessWidget {
   ExerciseController control = Get.put(ExerciseController());
 
+  Widget _selectBodyPart(BuildContext context, double screenWidth) {
+    return Obx(() => SizedBox(
+        // O ConstrainedBox
+        width: screenWidth - 40 - 30,
+        child: InputDecorator(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: 'Partes del Cuerpo',
+            hintText: 'Select an option',
+            contentPadding:
+                EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<BodyPart>(
+              isDense: true,
+              isExpanded: true,
+              value: null, // Establecer el valor inicial como null
+              onChanged: (BodyPart? bodyPart) {
+                control.bodyPartSelected(context, bodyPart!);
+              },
+              items: [
+                DropdownMenuItem<BodyPart>(
+                  value: null, // Establecer el valor del hint como null
+                  child: Text(
+                    control.bodyPartSelectedText.value,
+                    style: TextStyle(color: Colors.black54),
+                  ),
+                ),
+                ...control.bodyParts
+                    .map<DropdownMenuItem<BodyPart>>((BodyPart item) {
+                  return DropdownMenuItem<BodyPart>(
+                    value: item,
+                    child: Text(item.name),
+                  );
+                }).toList(),
+              ],
+            ),
+          ),
+        )));
+  }
+
   Widget _buildBody(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Column(children: [
+        Row(
+          children: [
+            _selectBodyPart(context, screenWidth),
+            _resetButton(context)
+          ],
+        ),
         _exercisesGrid(context),
       ]),
     );
+  }
+
+  Widget _resetButton(BuildContext context) {
+    return Container(
+        width: 40,
+        child: IconButton(
+          icon: Icon(Icons.refresh), // Icono a mostrar
+          onPressed: () {
+            control.resetBodyPartSelection();
+          }, // Función a ejecutar al hacer clic
+        ));
   }
 
   Widget _exercisesGrid(BuildContext context) {

@@ -1,8 +1,14 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../models/entities/exercise.dart';
+import '../../models/entities/body_part.dart';
 
 class ExerciseController extends GetxController {
   RxList<Exercise> exercises = <Exercise>[].obs;
+  RxList<BodyPart> bodyParts = <BodyPart>[].obs;
+  Rx<BodyPart?> selectedBodyPart = Rx<BodyPart?>(null);
+  RxString bodyPartSelectedText = "Seleccione un parte del cuerpo".obs;
+
   List<Exercise> exercises2 = [
     Exercise(
         id: 1,
@@ -438,8 +444,46 @@ class ExerciseController extends GetxController {
         bodyPartId: 6)
   ];
 
+  List<BodyPart> bodyParts2 = [
+    BodyPart(
+      id: 1,
+      name: 'ABDOMEN',
+    ),
+    BodyPart(
+      id: 2,
+      name: 'PIERNAS',
+    ),
+    BodyPart(
+      id: 3,
+      name: 'PECHO',
+    ),
+    BodyPart(
+      id: 4,
+      name: 'HOMBROS',
+    ),
+  ];
+
   ExerciseController() {
     print('++++++++++++++++++++ RoutineController ++++++++++++++++++++');
     exercises.addAll(exercises2);
+    bodyParts.addAll(bodyParts2);
+  }
+
+  void bodyPartSelected(BuildContext context, BodyPart selectedBodyPart) {
+    List<Exercise> bodyPartExercises = [];
+    for (Exercise exercise in this.exercises2) {
+      if (exercise.bodyPartId == selectedBodyPart.id) {
+        bodyPartExercises.add(exercise);
+      }
+    }
+    this.exercises.clear();
+    this.exercises.addAll(bodyPartExercises);
+    this.bodyPartSelectedText.value = selectedBodyPart.name;
+  }
+
+  void resetBodyPartSelection() {
+    this.exercises.clear();
+    this.exercises.addAll(this.exercises2);
+    this.bodyPartSelectedText.value = "Seleccione un parte del cuerpo";
   }
 }
