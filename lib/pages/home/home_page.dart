@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ulimagym/models/apis/user_validate.dart';
 import 'home_controller.dart';
 import '../exercise/exercise_page.dart';
 import '../profile/profile_page.dart';
 import '../routine/routine_page.dart';
 
 class HomePage extends StatefulWidget {
+  final UserValidate user;
+
+  HomePage({
+    required this.user,
+  });
+
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState(user: this.user);
 }
 
 class _HomePageState extends State<HomePage> {
+  final UserValidate user;
+
+  _HomePageState({required this.user});
+
   TemplateController control = Get.put(TemplateController());
 
   Widget _popUpMenu(BuildContext context) {
@@ -22,7 +33,8 @@ class _HomePageState extends State<HomePage> {
             print('about');
             break;
           case 'profile':
-            print('profile');
+            print(
+                'profile user_id = ${user.userId}, member_id = ${user.memberId}');
             break;
           case 'signOut':
             print('Cerrar Sesión');

@@ -1,12 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:get/utils.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
 import 'package:ulimagym/models/apis/response_api.dart';
 import 'package:ulimagym/models/apis/user_validate.dart';
 import '../configs/constants.dart';
-import '../configs/http_api_exception.dart';
 
 class UserService {
   Future<UserValidate?> validate(String user, String password) async {
