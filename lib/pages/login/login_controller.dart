@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:ulimagym/models/apis/user_validate.dart';
+import 'package:ulimagym/services/user_service.dart';
 import '../../models/entities/user.dart';
 import '../home/home_page.dart';
 import '../recover/recover_page.dart';
@@ -10,6 +12,7 @@ class LoginController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   var message = "Initial Text".obs;
   var messageColor = Colors.yellow.obs;
+  UserService userService = UserService();
 
   List<User> users = [
     User(user: "user1", password: "password1"),
@@ -24,33 +27,30 @@ class LoginController extends GetxController {
     User(user: "user10", password: "password10"),
   ];
 
-  void login(BuildContext context) {
+  void login(BuildContext context) async {
     //print('usuario: ${userController.text}, contraseña: ${passwordController.text}');
     String user = userController.text;
     String password = passwordController.text;
-    User newUser = User(password: password, user: user);
-    bool found = false;
-    for (User u in users) {
-      if (u.user == newUser.user && u.password == newUser.password) {
-        found = true;
-      }
-    }
-    if (found) {
+    UserValidate? userValidate = await userService.validate(user, password);
+    if (userValidate == null) {
+      message.value = 'No se pudo validar el usuario';
+      messageColor.value = Colors.red;
+    } else if (userValidate!.isEmpty()) {
+      message.value = 'Usuario no válido';
+      messageColor.value = Colors.red;
+    } else {
       message.value = 'usuario encontrado';
       messageColor.value = Colors.green;
-    } else {
-      message.value = 'usuario no encontrado';
-      messageColor.value = Colors.red;
+      Future.delayed(Duration(seconds: 2), () {
+        message.value = '';
+        if (messageColor.value == Colors.green) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
+        }
+      });
     }
-    Future.delayed(Duration(seconds: 5), () {
-      message.value = '';
-      if (messageColor.value == Colors.green) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
-      }
-    });
   }
 
   void goToSignIn(BuildContext context) {
