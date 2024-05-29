@@ -18,7 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final UserValidate user;
+  UserValidate user;
 
   _HomePageState({required this.user});
 
@@ -61,10 +61,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   int _selectedIndex = 0;
-  static List<Widget> _widgetOptions = <Widget>[
-    RoutinePage(),
-    ExercisePage(),
-    ProfilePage(),
+  List<Widget Function(dynamic)> _widgetOptions = <Widget Function(dynamic)>[
+    (user) => RoutinePage(user: user),
+    (user) => ExercisePage(),
+    (user) => ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> {
             _popUpMenu(context)
           ]),
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: _widgetOptions.elementAt(_selectedIndex)(this.user),
       ),
       bottomNavigationBar: _navigationBottom(),
     );
